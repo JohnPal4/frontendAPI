@@ -25,3 +25,6 @@ def patch_item(material_id, data):
 def delete_item(material_id):
     res = requests.delete(f"{ENDPOINTS['inventory']}/{material_id}")
     return res.json()
+
+def search_items(query):
+    return requests.get(f"{ENDPOINTS['inventory']}/search", params={"q": query}).json()
