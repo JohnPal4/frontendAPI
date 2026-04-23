@@ -5,14 +5,15 @@ from api import (
     create_item,
     replace_item,
     patch_item,
-    delete_item
+    delete_item,
+    search_items
 )
 
 st.set_page_config(page_title="Inventory Manager", layout="wide")
 
 st.title("Inventory Management System")
 
-menu = ["View All", "Get One", "Create", "Update (PUT)", "Patch (Partial)", "Delete"]
+menu = ["View All", "Search", "Get One", "Create", "Update (PUT)", "Patch (Partial)", "Delete"]
 choice = st.sidebar.selectbox("Menu", menu)
 
 # ---------------- VIEW ALL ----------------
@@ -20,6 +21,24 @@ if choice == "View All":
     st.subheader("All Inventory Items")
     data = get_all_items()
     st.dataframe(data)
+
+# ---------------- SEARCH ----------------
+elif choice == "Search":
+    st.subheader("Search Inventory")
+
+    query = st.text_input("Search by Material Name / Location / ID")
+
+    if st.button("Search"):
+        if query.strip():
+            results = search_items(query)
+
+            if results:
+                st.success(f"Found {len(results)} item(s)")
+                st.dataframe(results)
+            else:
+                st.warning("No results found")
+        else:
+            st.error("Please enter a search term")
 
 # ---------------- GET ONE ----------------
 elif choice == "Get One":
