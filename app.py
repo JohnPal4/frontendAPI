@@ -31,14 +31,17 @@ elif choice == "Search":
     if st.button("Search"):
         if query.strip():
             results = search_items(query)
-
-            if results:
+    
+            if isinstance(results, dict) and "error" in results:
+                st.error("Search failed")
+                st.write(results)
+    
+            elif results:
                 st.success(f"Found {len(results)} item(s)")
                 st.dataframe(results)
+    
             else:
                 st.warning("No results found")
-        else:
-            st.error("Please enter a search term")
 
 # ---------------- GET ONE ----------------
 elif choice == "Get One":
