@@ -27,4 +27,20 @@ def delete_item(material_id):
     return res.json()
 
 def search_items(query):
-    return requests.get(f"{ENDPOINTS['inventory']}/search", params={"q": query}).json()
+    url = f"{ENDPOINTS['inventory']}/search"
+    response = requests.get(url, params={"q": query})
+
+    # 🔥 DEBUG HELP (optional but recommended)
+    if response.status_code != 200:
+        return {
+            "error": response.status_code,
+            "message": response.text
+        }
+
+    try:
+        return response.json()
+    except Exception:
+        return {
+            "error": "Invalid JSON response",
+            "raw": response.text
+        }
